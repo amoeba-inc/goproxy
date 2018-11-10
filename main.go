@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ampeba-inc/goproxy/module"
+	"github.com/amoeba-inc/goproxy/module"
 )
 
 var cacheDir string
