@@ -1,1 +1,1 @@
-module github.com/goproxyio/goproxy
+module github.com/amoeba-inc/goproxy

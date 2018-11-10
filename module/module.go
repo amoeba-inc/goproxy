@@ -24,7 +24,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/goproxyio/goproxy/semver"
+	"github.com/amoeba-inc/goproxy/semver"
 )
 
 // A Version is defined by a module path and version pair.
