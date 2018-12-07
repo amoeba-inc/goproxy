@@ -48,8 +48,20 @@ func (*httpProxy) serveHTTP(w http.ResponseWriter, r *http.Request) {
 
 	pkgs := strings.Split(urlPath, "/")
 	pkg := ""
+	version := "latest"
 	for i, l := 1, len(pkgs); i < l; i++ {
-		if pkgs[i] == "@latest" || pkgs[i] == "@v" {
+		if pkgs[i] == "@latest" {
+			break
+		}
+
+		if pkgs[i] == "@v" {
+			if (i + 1) < l {
+				if pkgs[i+1] != "list" {
+					version = strings.TrimSuffix(pkgs[i+1], ".info")
+					version = strings.TrimSuffix(version, ".mod")
+					version = strings.TrimSuffix(version, ".zip")
+				}
+			}
 			break
 		}
 
@@ -60,7 +72,7 @@ func (*httpProxy) serveHTTP(w http.ResponseWriter, r *http.Request) {
 		pkg += pkgs[i]
 	}
 
-	err := HTTPProxy.goModDownload(pkg)
+	err := HTTPProxy.goModDownload(pkg, version)
 	if err != nil && err != errNotFound {
 		ReturnServerError(w, err)
 		return
@@ -92,8 +104,8 @@ func (*httpProxy) director(r *http.Request) {
 	r.URL.Host = "goproxy.io"
 }
 
-func (*httpProxy) goModDownload(pkg string) (err error) {
-	cmd := exec.Command("go", "mod", "download", pkg+"@latest")
+func (*httpProxy) goModDownload(pkg, version string) (err error) {
+	cmd := exec.Command("go", "mod", "download", pkg+"@"+version)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return
