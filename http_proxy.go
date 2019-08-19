@@ -41,7 +41,7 @@ func (*httpProxy) listenAndServe() error {
 
 func (*httpProxy) serveHTTP(w http.ResponseWriter, r *http.Request) {
 	urlPath := r.URL.Path
-	if !strings.HasPrefix(urlPath, "/amiba.io") {
+	if !strings.HasPrefix(urlPath, "/amiba.fun") && !strings.HasPrefix(urlPath, "/amiba.io") {
 		HTTPProxy.reverseProxy.ServeHTTP(w, r)
 		return
 	}
